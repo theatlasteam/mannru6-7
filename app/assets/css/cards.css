@@ -1,0 +1,167 @@
+/* ═══ Общие визуалы карт (карты, казино, рулетка) ═══ */
+
+.mannru-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.mannru-card__emblem {
+  position: absolute;
+  z-index: 0;
+  top: -14px;
+  right: -6px;
+  font-size: 96px;
+  font-weight: 900;
+  line-height: 1;
+  opacity: 0.16;
+  pointer-events: none;
+  user-select: none;
+  transform: rotate(8deg);
+}
+
+.mannru-card__muted {
+  opacity: 0.75;
+}
+
+.mannru-card__number {
+  letter-spacing: 0.08em;
+}
+
+/* декор тиров */
+.mannru-card--dots {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.14) 1.5px, transparent 1.5px);
+  background-size: 14px 14px;
+}
+
+.mannru-card--stripes {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(0, 0, 0, 0.12) 0,
+    rgba(0, 0, 0, 0.12) 10px,
+    transparent 10px,
+    transparent 22px
+  );
+}
+
+.mannru-card--rings {
+  background-image: radial-gradient(circle at 85% 15%, rgba(0, 0, 0, 0.14) 0 14px, transparent 15px),
+    radial-gradient(circle at 60% 40%, rgba(0, 0, 0, 0.1) 0 22px, transparent 23px),
+    radial-gradient(circle at 20% 80%, rgba(0, 0, 0, 0.12) 0 30px, transparent 31px);
+}
+
+.mannru-card--coins {
+  background-image: radial-gradient(circle at 12% 20%, rgba(255, 255, 255, 0.35) 0 16px, transparent 17px),
+    radial-gradient(circle at 80% 65%, rgba(255, 255, 255, 0.3) 0 24px, transparent 25px),
+    radial-gradient(circle at 40% 90%, rgba(255, 255, 255, 0.28) 0 18px, transparent 19px),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.14), transparent 55%);
+}
+
+.mannru-card--diamonds {
+  background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.16) 0 2px, transparent 2px 16px),
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.16) 0 2px, transparent 2px 16px),
+    linear-gradient(135deg, rgba(0, 0, 0, 0.18), transparent 60%);
+}
+
+/* ═══ мутированные карты — эффект зависит от поведения ═══ */
+.mannru-card--mutated > *:not(.mannru-card__emblem) {
+  position: relative;
+  z-index: 1;
+}
+
+.mannru-card--mutated .mannru-card__emblem {
+  animation: mannru-wobble 3s ease-in-out infinite;
+}
+
+.mannru-card--greedy::after,
+.mannru-card--generous::after,
+.mannru-card--miner::after,
+.mannru-card--lucky::after {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: 190%;
+  aspect-ratio: 1 / 1;
+  content: '';
+  pointer-events: none;
+}
+
+/* Жадная — золото: мерцающий металл */
+.mannru-card--greedy::after {
+  background: conic-gradient(from 0deg, #ffd54f, #ffb300, #ffe082, #ff8f00, #ffd54f);
+  filter: blur(14px);
+  mix-blend-mode: screen;
+  opacity: 0.85;
+  animation: mannru-spin 7s linear infinite;
+}
+
+/* Щедрая — розовый пульс */
+.mannru-card--generous::after {
+  background: radial-gradient(circle at 50% 50%, #f06292 0%, #ce93d8 45%, transparent 70%);
+  filter: blur(12px);
+  mix-blend-mode: screen;
+  opacity: 0.85;
+  animation: mannru-pulse 3s ease-in-out infinite;
+}
+
+/* Майнер — циановые искры */
+.mannru-card--miner::after {
+  background:
+    radial-gradient(circle at 25% 30%, rgba(0, 229, 255, 0.85) 0 2px, transparent 3px),
+    radial-gradient(circle at 70% 25%, rgba(0, 229, 255, 0.7) 0 2px, transparent 3px),
+    radial-gradient(circle at 45% 70%, rgba(0, 229, 255, 0.8) 0 2px, transparent 3px),
+    radial-gradient(circle at 85% 75%, rgba(0, 229, 255, 0.6) 0 2px, transparent 3px),
+    radial-gradient(circle at 50% 50%, rgba(0, 188, 212, 0.55) 0%, rgba(1, 87, 155, 0.35) 60%, transparent 75%);
+  mix-blend-mode: screen;
+  opacity: 0.95;
+  animation: mannru-twinkle 2.4s ease-in-out infinite;
+}
+
+/* Удачливая — радужная аура */
+.mannru-card--lucky::after {
+  background: conic-gradient(from 0deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #b197fc, #ff6b6b);
+  filter: blur(16px);
+  mix-blend-mode: screen;
+  opacity: 0.9;
+  animation: mannru-spin 6s linear infinite;
+}
+
+@keyframes mannru-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes mannru-pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.18);
+    opacity: 0.95;
+  }
+}
+
+@keyframes mannru-twinkle {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 1;
+  }
+}
+
+@keyframes mannru-wobble {
+  0%, 100% {
+    transform: rotate(8deg) scale(1);
+  }
+  50% {
+    transform: rotate(14deg) scale(1.12);
+  }
+}
